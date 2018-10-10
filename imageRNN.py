@@ -77,7 +77,7 @@ ground_truth=tf.expand_dims(ground_truth,axis=2)
 x=np.arange(1,81)/np.sum(np.arange(1,81))
 mask=tf.expand_dims(tf.constant(np.matlib.repmat(x,4,1),dtype=tf.float32),axis=2)
 error=tf.reduce_sum(((ground_truth[:,:,:]-predictions[:,:,:])**2)*mask)#error
-train_step=tf.train.AdamOptimizer(0.001).minimize(error)
+train_step=tf.train.AdamOptimizer(0.0001).minimize(error)
 
 with tf.Session() as sess:
     epoch_num=5000
