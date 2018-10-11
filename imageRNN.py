@@ -37,8 +37,8 @@ TTF_test[:,-4:]=0
 
 timestep=np.size(train_set_input,axis=1)
 input_dim=np.size(train_set_input,axis=2)
-num_units=20
-batch_size=4
+num_units=10
+batch_size=8
 initial_prediction_time=10
 
 #mean absolute percentage error for performance evaluation
@@ -63,13 +63,14 @@ encoder_input=tf.placeholder(tf.float32,[batch_size,timestep,input_dim])#input p
 ground_truth=tf.placeholder(tf.float32,[batch_size,timestep])#true output placeholder
 #Build encoder part
 encoder_cell=tf.nn.rnn_cell.BasicLSTMCell(num_units,name='encoder',dtype=tf.float32)#LSTM cell
+encoder_cell=tf.nn.rnn_cell.DropoutWrapper(encoder_cell,input_keep_prob=input_dropout=0.8,output_keep_prob=0.8)
 initial_state = encoder_cell.zero_state(batch_size, dtype=tf.float32)
 encoder_outputs,encoder_state=tf.nn.dynamic_rnn(encoder_cell,encoder_input,
                                                 initial_state=initial_state)#Run dynamic RNN
 #output vector (It is called as vector because outputs are created as vectors of size timestep)
 W2=tf.Variable(np.random.rand(num_units,1),dtype=tf.float32)
 b2=tf.Variable(np.random.rand(1,1),dtype=tf.float32)
-predictions=[tf.matmul(tf.squeeze(encoder_outputs[i,:,:]),W2)+b2
+predictions=[tf.nn.relu(tf.matmul(tf.squeeze(encoder_outputs[i,:,:]),W2)+b2)
                 for i in range(encoder_outputs.get_shape().as_list()[0])]
 predictions=tf.stack(predictions)
 
