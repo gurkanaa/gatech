@@ -76,7 +76,7 @@ predictions=tf.stack(predictions)
 
 ground_truth=tf.expand_dims(ground_truth,axis=2)
 x=np.arange(1,81)/np.sum(np.arange(1,81))
-mask=tf.expand_dims(tf.constant(np.matlib.repmat(x,4,1),dtype=tf.float32),axis=2)
+mask=tf.expand_dims(tf.constant(np.matlib.repmat(x,batch_size,1),dtype=tf.float32),axis=2)
 error=tf.reduce_sum(((ground_truth[:,:,:]-predictions[:,:,:])**2)*mask)#error
 train_step=tf.train.AdamOptimizer(0.0001).minimize(error)
 
