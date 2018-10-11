@@ -63,7 +63,7 @@ encoder_input=tf.placeholder(tf.float32,[batch_size,timestep,input_dim])#input p
 ground_truth=tf.placeholder(tf.float32,[batch_size,timestep])#true output placeholder
 #Build encoder part
 encoder_cell=tf.nn.rnn_cell.BasicLSTMCell(num_units,name='encoder',dtype=tf.float32)#LSTM cell
-encoder_cell=tf.nn.rnn_cell.DropoutWrapper(encoder_cell,input_keep_prob=input_dropout=0.8,output_keep_prob=0.8)
+encoder_cell=tf.nn.rnn_cell.DropoutWrapper(encoder_cell,input_keep_prob=0.8,output_keep_prob=0.8)
 initial_state = encoder_cell.zero_state(batch_size, dtype=tf.float32)
 encoder_outputs,encoder_state=tf.nn.dynamic_rnn(encoder_cell,encoder_input,
                                                 initial_state=initial_state)#Run dynamic RNN
